@@ -11,3 +11,5 @@ class Authenticate extends AuthenticationEvent {
 }
 
 class SocialAuthenticate extends AuthenticationEvent {}
+
+class Logout extends AuthenticationEvent {}

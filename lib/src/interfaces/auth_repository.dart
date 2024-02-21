@@ -1,5 +1,7 @@
-abstract class AuthRepository {
-  Future<bool> authenticate(String email, String password);
+import 'package:task1/src/models/user.dart';
 
-  Future<bool> socialAuthenticate();
+abstract class AuthRepository {
+  Future<User?> authenticate(String email, String password);
+
+  Future<User?> socialAuthenticate();
 }

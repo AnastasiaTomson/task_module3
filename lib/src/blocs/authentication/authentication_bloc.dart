@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:task1/src/interfaces/auth_repository.dart';
+import 'package:task1/src/models/user.dart';
 import 'package:task1/src/repositories/auth_repository_impl.dart';
 
 part 'authentication_event.dart';
@@ -13,14 +14,17 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
   AuthenticationBloc() : super(AuthenticationInitial()) {
     on<Authenticate>((event, emit) async {
-      bool success =
-          await authRepository.authenticate(event.email, event.password);
-      success ? emit(Authenticated()) : emit(UnAuthenticated());
+      User? user = await authRepository.authenticate(event.email, event.password);
+      user != null ? emit(Authenticated(user)) : emit(ErrorAuthenticated());
     });
 
     on<SocialAuthenticate>((event, emit) async {
-      bool success = await authRepository.socialAuthenticate();
-      success ? emit(Authenticated()) : emit(UnAuthenticated());
+      User? user = await authRepository.socialAuthenticate();
+      user != null ? emit(Authenticated(user)) : emit(ErrorAuthenticated());
+    });
+
+    on<Logout>((event, emit) async {
+      emit(UnAuthenticated());
     });
   }
 }
